@@ -31,14 +31,12 @@ public class User implements UserDetails {
     private String password_hash;
 
 
-    public User(CreateUserRequest createUserRequest) {
+    public User(CreateUserRequest createUserRequest, String passwordHash) {
         this.name = createUserRequest.name();
         this.email = createUserRequest.email();
         this.phone = createUserRequest.phone();
         this.cpf = createUserRequest.cpf();
-
-        var passwordEncoder = new BCryptPasswordEncoder();
-        this.password_hash = passwordEncoder.encode(createUserRequest.password());
+        this.password_hash = passwordHash;
     }
 
     @Override
