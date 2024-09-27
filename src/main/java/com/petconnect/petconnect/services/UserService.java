@@ -6,6 +6,8 @@ import com.petconnect.petconnect.dtos.CreateUserRequest;
 import com.petconnect.petconnect.repositories.UserRepository;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,14 +16,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public User createUser(CreateUserRequest createUserRequest) throws PasswordMatchException {
-        boolean passwordsDoesntMatch = !createUserRequest.password().equals(createUserRequest.confirmPassword());
 
-        if (passwordsDoesntMatch) {
-            throw new PasswordMatchException("PasswordMatchException: Passwords does not match");
-        }
 
-        User userEntity = new User(createUserRequest);
+        String passwordHash = passwordEncoder.encode(createUserRequest.password());
+
+        User userEntity = new User(createUserRequest, passwordHash);
         return userRepository.save(userEntity);
     }
 }
