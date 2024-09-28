@@ -7,6 +7,7 @@ import com.petconnect.petconnect.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,9 +28,13 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
-    public User deleteUser(Long userId) {
-        User userEntity = userRepository.findById(userId).orElse(null);
+    public User deleteUser(Long userId, User loggedUser) {
 
+        if(!loggedUser.getId().equals(userId)) {
+            throw new AccessDeniedException("User can only delete himself.");
+        }
+
+        User userEntity = userRepository.findById(userId).orElse(null);
         if (userEntity == null) {
             throw new EntityNotFoundException("User not found");
         }
