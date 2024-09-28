@@ -4,8 +4,12 @@ import com.petconnect.petconnect.Entities.User;
 import com.petconnect.petconnect.Exceptions.PasswordMatchException;
 import com.petconnect.petconnect.dtos.CreateUserRequest;
 import com.petconnect.petconnect.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,14 +18,29 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User createUser(CreateUserRequest createUserRequest) throws PasswordMatchException {
-        boolean passwordsDoesntMatch = !createUserRequest.password().equals(createUserRequest.confirmPassword());
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-        if (passwordsDoesntMatch) {
-            throw new PasswordMatchException("PasswordMatchException: Passwords does not match");
+    public User createUser(CreateUserRequest createUserRequest) throws PasswordMatchException {
+        String passwordHash = passwordEncoder.encode(createUserRequest.password());
+
+        User userEntity = new User(createUserRequest, passwordHash);
+        return userRepository.save(userEntity);
+    }
+
+    public User deleteUser(Long userId, User loggedUser) {
+
+        if(!loggedUser.getId().equals(userId)) {
+            throw new AccessDeniedException("User can only delete himself.");
         }
 
-        User userEntity = new User(createUserRequest);
-        return userRepository.save(userEntity);
+        User userEntity = userRepository.findById(userId).orElse(null);
+        if (userEntity == null) {
+            throw new EntityNotFoundException("User not found");
+        }
+
+        userRepository.deleteById(userId);
+
+        return userEntity;
     }
 }
