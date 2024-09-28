@@ -3,6 +3,8 @@ package com.petconnect.petconnect.controllers;
 
 import com.petconnect.petconnect.Entities.User;
 import com.petconnect.petconnect.Exceptions.PasswordMatchException;
+import com.petconnect.petconnect.Exceptions.UserNotFoundException;
+import com.petconnect.petconnect.Exceptions.UserUnauthorizedException;
 import com.petconnect.petconnect.dtos.CreateUserRequest;
 import com.petconnect.petconnect.repositories.UserRepository;
 import com.petconnect.petconnect.services.UserService;
@@ -38,10 +40,17 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<User> deleteUser(@PathVariable Long id) throws UserNotFoundException, UserUnauthorizedException {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User deletedUser = userService.deleteUser(id, loggedUser);
         return ResponseEntity.ok(deletedUser);
+    }
+
+    @PatchMapping("/{id}")
+    ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUserBody) throws UserNotFoundException, UserUnauthorizedException {
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User updatedUser = userService.updateUser(id, updatedUserBody, loggedUser);
+        return ResponseEntity.ok(updatedUser);
     }
 
 }

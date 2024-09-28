@@ -2,6 +2,8 @@ package com.petconnect.petconnect.services;
 
 import com.petconnect.petconnect.Entities.User;
 import com.petconnect.petconnect.Exceptions.PasswordMatchException;
+import com.petconnect.petconnect.Exceptions.UserNotFoundException;
+import com.petconnect.petconnect.Exceptions.UserUnauthorizedException;
 import com.petconnect.petconnect.dtos.CreateUserRequest;
 import com.petconnect.petconnect.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,18 +31,37 @@ public class UserService {
     }
 
     public User deleteUser(Long userId, User loggedUser) {
-
-        if(!loggedUser.getId().equals(userId)) {
-            throw new AccessDeniedException("User can only delete himself.");
-        }
+        checkPathIdIsFromLoggedUser(loggedUser, userId);
 
         User userEntity = userRepository.findById(userId).orElse(null);
         if (userEntity == null) {
-            throw new EntityNotFoundException("User not found");
+            throw new UserNotFoundException("User not found");
         }
 
         userRepository.deleteById(userId);
+        return userEntity;
+    }
+
+    public  User updateUser(Long userId, User updatedUserBody, User loggedUser) {
+        checkPathIdIsFromLoggedUser(loggedUser, userId);
+
+        User userEntity = userRepository.findById(userId).orElse(null);
+        if (userEntity == null) {
+            throw new UserNotFoundException("User not found");
+        }
+
+        userEntity.setName(updatedUserBody.getName());
+        userEntity.setEmail(updatedUserBody.getEmail());
+        userEntity.setPhone(updatedUserBody.getPhone());
+        userEntity.setCpf(updatedUserBody.getCpf());
+        userRepository.save(userEntity);
 
         return userEntity;
+    }
+
+    private void checkPathIdIsFromLoggedUser(User loggedUser, Long userId) {
+        if(!loggedUser.getId().equals(userId)) {
+            throw new UserUnauthorizedException("User can only update himself.");
+        }
     }
 }
