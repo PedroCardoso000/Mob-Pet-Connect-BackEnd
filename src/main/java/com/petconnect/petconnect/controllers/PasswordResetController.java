@@ -1,6 +1,7 @@
 package com.petconnect.petconnect.controllers;
 
 import com.petconnect.petconnect.Entities.User;
+import com.petconnect.petconnect.dtos.EmailDTO;
 import com.petconnect.petconnect.services.EmailService;
 import com.petconnect.petconnect.services.PasswordResetTokenService;
 import com.petconnect.petconnect.services.UserService;
@@ -28,9 +29,9 @@ public class PasswordResetController {
     private EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<?> sendPasswordResetEmail(@RequestBody String email) {
+    public ResponseEntity<?> sendPasswordResetEmail(@RequestBody EmailDTO emailDTO) {
         System.out.println("\n entrou no controller pelo menos");
-        User user = userService.findByEmail(email);
+        User user = userService.findByEmail(emailDTO.getEmail());
         System.out.println("user" + user);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");

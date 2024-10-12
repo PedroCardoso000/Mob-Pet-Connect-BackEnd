@@ -69,7 +69,8 @@ public class UserService {
     public User findByEmail(String email) {
         System.out.println("imprime algo no console");
         User findUser = userRepository.findByEmail(email);
-        if(findUser == null) {
+        System.out.println("email" + email);
+        if (findUser == null) {
             throw new UserNotFoundException("User not found");
         } else {
             return findUser;
