@@ -11,8 +11,8 @@ COPY src ./src
 # Baixar dependências e compilar o projeto
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Imagem para rodar a aplicação
-FROM eclipse-temurin:17-jdk-alpine
+# Usar uma imagem base do OpenJDK 21
+FROM openjdk:21-jdk-slim
 
 # Definir diretório de trabalho para a aplicação
 WORKDIR /app
