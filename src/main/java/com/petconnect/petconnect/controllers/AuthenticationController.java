@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class AuthenticationController {
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResDTO> login(@RequestBody @Validated LoginDTO loginDTO) {
+    public ResponseEntity<LoginResDTO> login(@RequestBody @Validated LoginDTO loginDTO) throws UsernameNotFoundException {
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password());
         var authentication = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((User) authentication.getPrincipal());

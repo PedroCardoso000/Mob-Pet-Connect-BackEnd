@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
-    public User deleteUser(Long userId, User loggedUser) {
+    public User deleteUser(Long userId, User loggedUser) throws UserNotFoundException {
         checkPathIdIsFromLoggedUser(loggedUser, userId);
 
         User userEntity = userRepository.findById(userId).orElse(null);
@@ -42,7 +43,7 @@ public class UserService {
         return userEntity;
     }
 
-    public  User updateUser(Long userId, User updatedUserBody, User loggedUser) {
+    public  User updateUser(Long userId, User updatedUserBody, User loggedUser) throws PasswordMatchException, UserNotFoundException {
         checkPathIdIsFromLoggedUser(loggedUser, userId);
 
         User userEntity = userRepository.findById(userId).orElse(null);
@@ -62,6 +63,17 @@ public class UserService {
     private void checkPathIdIsFromLoggedUser(User loggedUser, Long userId) {
         if(!loggedUser.getId().equals(userId)) {
             throw new UserUnauthorizedException("User can only update himself.");
+        }
+    }
+
+    public User findByEmail(String email) {
+        System.out.println("imprime algo no console");
+        User findUser = userRepository.findByEmail(email);
+        System.out.println("email" + email);
+        if (findUser == null) {
+            throw new UserNotFoundException("User not found");
+        } else {
+            return findUser;
         }
     }
 }
