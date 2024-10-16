@@ -1,14 +1,27 @@
-# Usar uma imagem base do OpenJDK 21
-FROM openjdk:21-jdk-slim
+# Etapa 1: Imagem base para construção do projeto
+FROM maven:3.9.5-eclipse-temurin-17 AS builder
 
-# Definir o diretório de trabalho dentro do contêiner
+# Definir diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copiar o arquivo JAR gerado para o diretório de trabalho no contêiner
-COPY target/petconnect-0.0.1-SNAPSHOT.jar app.jar
+# Copiar arquivos do projeto para dentro do container
+COPY pom.xml .
+COPY src ./src
 
-# Expor a porta em que o Spring Boot irá rodar
+# Baixar dependências e compilar o projeto
+RUN mvn clean package -DskipTests
+
+# Etapa 2: Imagem para rodar a aplicação
+FROM eclipse-temurin:17-jdk-alpine
+
+# Definir diretório de trabalho para a aplicação
+WORKDIR /app
+
+# Copiar o JAR gerado na etapa de build
+COPY --from=builder /app/target/*.jar app.jar
+
+# Expor a porta que o Spring Boot usará
 EXPOSE 8080
 
-# Definir o comando para rodar o aplicativo
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Comando para iniciar a aplicação
+CMD ["java", "-jar", "app.jar"]
