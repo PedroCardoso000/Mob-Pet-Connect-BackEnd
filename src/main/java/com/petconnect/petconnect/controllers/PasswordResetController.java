@@ -1,7 +1,9 @@
 package com.petconnect.petconnect.controllers;
 
 import com.petconnect.petconnect.Entities.User;
+import com.petconnect.petconnect.Exceptions.UserNotFoundException;
 import com.petconnect.petconnect.dtos.EmailDTO;
+import com.petconnect.petconnect.dtos.ErrorDto;
 import com.petconnect.petconnect.services.EmailService;
 import com.petconnect.petconnect.services.PasswordResetTokenService;
 import com.petconnect.petconnect.services.UserService;
@@ -30,20 +32,19 @@ public class PasswordResetController {
 
     @PostMapping
     public ResponseEntity<?> sendPasswordResetEmail(@RequestBody EmailDTO emailDTO) {
-        System.out.println("\n entrou no controller pelo menos");
         User user = userService.findByEmail(emailDTO.getEmail());
-        System.out.println("user" + user);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
 
         String token = UUID.randomUUID().toString();
         passwordResetTokenService.createPasswordResetTokenForUser(user, token);
 
-        // Send email
-        String resetUrl = "http://http://localhost:5173/reset-password?token=" + token;
+        // URL corrigida para o link de reset
+        String resetUrl = "http://localhost:5173/reset-password?token=" + token;
         emailService.sendPasswordResetEmail(user.getEmail(), resetUrl);
 
-        return ResponseEntity.ok("Reset password email sent");
+        return ResponseEntity.ok("E-mail de redefinição de senha enviado");
     }
+
 }
