@@ -39,6 +39,10 @@ public class PetService {
         return userPets;
     }
 
+    public List<Pet> listPets() {
+        return petRepository.findAll();
+    }
+
     public Pet updatePet (Long petId, Pet updatedPetBody) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
