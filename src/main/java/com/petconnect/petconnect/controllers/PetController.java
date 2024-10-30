@@ -30,7 +30,7 @@ public class PetController {
     }
 
     @GetMapping
-    public  ResponseEntity<List<Pet>> getPetById() {
+    public  ResponseEntity<List<Pet>> listPets() {
         List<Pet> pets = petService.listPets();
         return  ResponseEntity.ok(pets);
     }
