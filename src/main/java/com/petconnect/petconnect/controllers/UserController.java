@@ -10,6 +10,7 @@ import com.petconnect.petconnect.repositories.UserRepository;
 import com.petconnect.petconnect.services.UserService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,10 +48,17 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUserBody) throws UserNotFoundException, UserUnauthorizedException {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUserBody) throws UserNotFoundException, UserUnauthorizedException {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User updatedUser = userService.updateUser(id, updatedUserBody, loggedUser);
         return ResponseEntity.ok(updatedUser);
     }
 
+    @GetMapping("/bytoken")
+    public ResponseEntity<User> getUserById() throws UserNotFoundException, UserUnauthorizedException {
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long idUser = loggedUser.getId();
+        User findUser = userService.findById(idUser);
+        return ResponseEntity.ok(findUser);
+    }
 }

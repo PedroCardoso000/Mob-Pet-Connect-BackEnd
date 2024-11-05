@@ -6,14 +6,11 @@ import com.petconnect.petconnect.Exceptions.UserNotFoundException;
 import com.petconnect.petconnect.Exceptions.UserUnauthorizedException;
 import com.petconnect.petconnect.dtos.CreateUserRequest;
 import com.petconnect.petconnect.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -72,6 +69,15 @@ public class UserService {
             throw new UserNotFoundException();
         } else {
             return findUser;
+        }
+    }
+
+    public User findById(Long id) {
+        Optional<User> findUser = userRepository.findById(id);
+        if (findUser.isEmpty()) {
+            throw new UserNotFoundException();
+        } else {
+            return findUser.orElse(null);
         }
     }
 }
