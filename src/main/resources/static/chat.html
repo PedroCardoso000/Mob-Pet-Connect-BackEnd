@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Private Chat WebSocket</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<h2>Private Chat</h2>
+<div id="chatbox"></div>
+<input type="text" id="sender" placeholder="Your name" />
+<input type="text" id="receiver" placeholder="Receiver's name" />
+<input type="text" id="message" placeholder="Type your message here" />
+<button onclick="connectToChat()">Connect to Chat</button>
+<button onclick="sendMessage()">Send Message</button>
+
+<script>
+    let stompClient = null;
+
+    function connectToChat() {
+        const sender = document.getElementById('sender').value;
+        const receiver = document.getElementById('receiver').value;
+
+        const socket = new SockJS('/chat');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe(`/topic/chat/${sender}-${receiver}`, function (messageOutput) {
+                const message = JSON.parse(messageOutput.body);
+                document.getElementById('chatbox').innerHTML += `<p><strong>${message.sender}:</strong> ${message.content}</p>`;
+            });
+        });
+    }
+
+    function sendMessage() {
+        const sender = document.getElementById('sender').value;
+        const receiver = document.getElementById('receiver').value;
+        const content = document.getElementById('message').value;
+        const message = { sender, content, timestamp: new Date().toISOString() };
+
+        stompClient.send(`/app/chat/${sender}/${receiver}`, {}, JSON.stringify(message));
+        document.getElementById('message').value = '';
+    }
+</script>
+</body>
+</html>
