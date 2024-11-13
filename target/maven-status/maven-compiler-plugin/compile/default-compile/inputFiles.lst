@@ -1,9 +1,12 @@
 C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\config\CorsConfig.java
+C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\config\WebSocketConfig.java
 C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\controllers\AuthenticationController.java
+C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\controllers\ChatController.java
 C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\controllers\ExceptionController.java
 C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\controllers\PasswordResetController.java
 C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\controllers\PetController.java
 C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\controllers\UserController.java
+C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\dtos\ChatMessage.java
 C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\dtos\CreatePetRequest.java
 C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\dtos\CreateUserRequest.java
 C:\Users\breno\desenvolvimento\faculdade\petconnect\petconnect-back-end\src\main\java\com\petconnect\petconnect\dtos\EmailDTO.java
