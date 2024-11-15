@@ -7,14 +7,25 @@ import com.petconnect.petconnect.Exceptions.UserUnauthorizedException;
 import com.petconnect.petconnect.dtos.CreatePetRequest;
 import com.petconnect.petconnect.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/pet")
@@ -57,5 +68,37 @@ public class PetController {
     ResponseEntity<String> deletePet(@PathVariable Long id, @RequestBody Pet updatedPetBody) {
         petService.deletePet(id);
         return ResponseEntity.ok("Pet successfully deleted");
+    }
+
+    @PostMapping("/upload-image/{id}")
+    ResponseEntity<String> uploadPetImage(@RequestParam("image") MultipartFile image, @PathVariable Long id) {
+        try {
+            petService.uploadPetImage(image, id);
+            return ResponseEntity.ok("Pet image created");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("File upload failed.");
+        }
+    }
+
+    @GetMapping("/image/{petImage}")
+    ResponseEntity<Resource> getPetImage(@PathVariable String petImage) {
+        try {
+            Path filePath = Paths.get("images/pet", petImage);
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                String contentType = Files.probeContentType(filePath);
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(Optional.ofNullable(contentType).orElse("application/octet-stream")))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
+        } catch (Exception e) {
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

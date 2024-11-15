@@ -34,6 +34,8 @@ public class Pet {
 
     private String race;
 
+    private String image;
+
     @ElementCollection
     @CollectionTable(name = "pet_vaccine", joinColumns = @JoinColumn(name = "pet_id"))
     @Column(name = "vaccine")
