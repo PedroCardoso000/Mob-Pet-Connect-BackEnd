@@ -38,7 +38,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/reset").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll() // para garantir o acesso à documentação da API
-                        .requestMatchers("/chat/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/chat/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/topic/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/app/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
