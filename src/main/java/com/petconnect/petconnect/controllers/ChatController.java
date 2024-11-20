@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class ChatController {
@@ -31,4 +32,5 @@ public class ChatController {
         String chatRoom = chatMessage.getSender() + "-" + chatMessage.getReceiver();
         messagingTemplate.convertAndSend("/topic/chat/" + chatRoom, chatMessage);
     }
+
 }
