@@ -8,11 +8,18 @@ import com.petconnect.petconnect.dtos.CreatePetRequest;
 import com.petconnect.petconnect.enums.PetGender;
 import com.petconnect.petconnect.repositories.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PetService {
@@ -83,5 +90,23 @@ public class PetService {
         }
 
         petRepository.deleteById(petId);
+    }
+
+    public void uploadPetImage(MultipartFile file, Long petId) throws IOException {
+        String fileName = UUID.randomUUID().toString() + ".jpg";
+        Path filePath = Paths.get("images/pet", fileName);
+        try {
+            Files.createDirectories(filePath.getParent());
+            Files.write(filePath, file.getBytes());
+        } catch (IOException e) {
+            throw new IOException(e);
+        }
+
+        Pet pet = petRepository
+                .findById(petId)
+                .orElseThrow(PetNotFoundException::new);
+
+        pet.setImage(fileName);
+        petRepository.save(pet);
     }
 }

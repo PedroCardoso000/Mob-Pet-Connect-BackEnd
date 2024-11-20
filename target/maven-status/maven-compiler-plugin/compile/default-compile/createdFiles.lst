@@ -1,6 +1,7 @@
 com\petconnect\petconnect\Entities\Pet.class
 com\petconnect\petconnect\services\TokenService.class
 com\petconnect\petconnect\services\UserService.class
+com\petconnect\petconnect\dtos\ChatMessage.class
 com\petconnect\petconnect\services\PetService.class
 com\petconnect\petconnect\controllers\UserController.class
 com\petconnect\petconnect\controllers\ExceptionController.class
@@ -9,6 +10,7 @@ com\petconnect\petconnect\dtos\CreateUserRequest.class
 com\petconnect\petconnect\Exceptions\PasswordMatchException.class
 com\petconnect\petconnect\infra\security\SecurityFilter.class
 com\petconnect\petconnect\repositories\PetRepository.class
+com\petconnect\petconnect\config\WebSocketConfig.class
 com\petconnect\petconnect\Exceptions\PageNotFoundExcetion.class
 com\petconnect\petconnect\repositories\UserRepository.class
 com\petconnect\petconnect\services\AuthorizationService.class
@@ -24,6 +26,7 @@ com\petconnect\petconnect\PetconnectApplication.class
 com\petconnect\petconnect\dtos\CreatePetRequest.class
 com\petconnect\petconnect\dtos\LoginResDTO.class
 com\petconnect\petconnect\Exceptions\UserUnauthorizedException.class
+com\petconnect\petconnect\controllers\ChatController.class
 com\petconnect\petconnect\dtos\ErrorDto.class
 com\petconnect\petconnect\controllers\PasswordResetController.class
 com\petconnect\petconnect\Entities\User.class

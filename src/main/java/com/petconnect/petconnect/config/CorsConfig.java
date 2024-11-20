@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+
 import java.util.List;
 
 @Configuration
@@ -12,10 +14,10 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource () {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // Permitir todas as origens (modifique se necessário)
+        configuration.addAllowedOriginPattern("*"); // Permitir todas as origens (modifique se necessário)
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*")); // Permitir todos os cabeçalhos
-        configuration.setAllowCredentials(false); // Habilite se precisar enviar cookies/credenciais
+        configuration.setAllowCredentials(true); // Habilite se precisar enviar cookies/credenciais
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
