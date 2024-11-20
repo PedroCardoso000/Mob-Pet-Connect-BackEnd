@@ -1,9 +1,7 @@
 package com.petconnect.petconnect.controllers;
 
 import com.petconnect.petconnect.Entities.User;
-import com.petconnect.petconnect.Exceptions.UserNotFoundException;
 import com.petconnect.petconnect.dtos.EmailDTO;
-import com.petconnect.petconnect.dtos.ErrorDto;
 import com.petconnect.petconnect.services.EmailService;
 import com.petconnect.petconnect.services.PasswordResetTokenService;
 import com.petconnect.petconnect.services.UserService;
