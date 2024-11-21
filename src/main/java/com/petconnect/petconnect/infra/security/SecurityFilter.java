@@ -29,11 +29,15 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
+        System.out.println("token " + token);
         if (token != null) {
             var login = tokenService.validateToken(token);
+            System.out.println("login " + login);
             UserDetails user = userRepository.findByEmail(login);
+            System.out.println("user " + user);
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            System.out.println("authentication " + authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

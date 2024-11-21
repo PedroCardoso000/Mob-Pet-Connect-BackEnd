@@ -6,12 +6,16 @@ com\petconnect\petconnect\services\PetService.class
 com\petconnect\petconnect\controllers\UserController.class
 com\petconnect\petconnect\controllers\ExceptionController.class
 com\petconnect\petconnect\repositories\PasswordResetTokenRepository.class
+com\petconnect\petconnect\services\ChatRoomService.class
+com\petconnect\petconnect\repositories\ChatRoomRepository.class
 com\petconnect\petconnect\dtos\CreateUserRequest.class
 com\petconnect\petconnect\Exceptions\PasswordMatchException.class
 com\petconnect\petconnect\infra\security\SecurityFilter.class
 com\petconnect\petconnect\repositories\PetRepository.class
 com\petconnect\petconnect\config\WebSocketConfig.class
+com\petconnect\petconnect\controllers\ChatRoomController.class
 com\petconnect\petconnect\Exceptions\PageNotFoundExcetion.class
+com\petconnect\petconnect\Entities\ChatRoom.class
 com\petconnect\petconnect\repositories\UserRepository.class
 com\petconnect\petconnect\services\AuthorizationService.class
 com\petconnect\petconnect\services\EmailService.class
@@ -31,6 +35,7 @@ com\petconnect\petconnect\dtos\ErrorDto.class
 com\petconnect\petconnect\controllers\PasswordResetController.class
 com\petconnect\petconnect\Entities\User.class
 com\petconnect\petconnect\infra\security\SecurityConfig.class
+com\petconnect\petconnect\dtos\CreateChatRoomRequest.class
 com\petconnect\petconnect\config\CorsConfig.class
 com\petconnect\petconnect\enums\PetGender.class
 com\petconnect\petconnect\infra\security\DelegatedAuthenticationEntryPoint.class
