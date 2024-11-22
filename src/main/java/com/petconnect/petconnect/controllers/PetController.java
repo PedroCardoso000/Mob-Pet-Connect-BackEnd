@@ -59,7 +59,7 @@ public class PetController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<String> deletePet(@PathVariable Long id, @RequestBody Pet updatedPetBody) {
+    ResponseEntity<String> deletePet(@PathVariable Long id) {
         petService.deletePet(id);
         return ResponseEntity.ok("Pet successfully deleted");
     }
