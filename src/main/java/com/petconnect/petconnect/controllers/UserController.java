@@ -6,6 +6,7 @@ import com.petconnect.petconnect.Exceptions.PasswordMatchException;
 import com.petconnect.petconnect.Exceptions.UserNotFoundException;
 import com.petconnect.petconnect.Exceptions.UserUnauthorizedException;
 import com.petconnect.petconnect.dtos.CreateUserRequest;
+import com.petconnect.petconnect.dtos.UserDto;
 import com.petconnect.petconnect.repositories.UserRepository;
 import com.petconnect.petconnect.services.UserService;
 import org.apache.coyote.BadRequestException;
@@ -18,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -55,10 +57,18 @@ public class UserController {
     }
 
     @GetMapping("/bytoken")
-    public ResponseEntity<User> getUserById() throws UserNotFoundException, UserUnauthorizedException {
-        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long idUser = loggedUser.getId();
-        User findUser = userService.findById(idUser);
-        return ResponseEntity.ok(findUser);
+    public ResponseEntity<UserDto> getUserById() throws UserUnauthorizedException {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof User userDetails) {
+            Optional<User> userOptional = userRepository.findById(userDetails.getId());
+            return userOptional.map(user -> ResponseEntity.ok(UserDto.fromEntity(user)))
+                    .orElseThrow(() -> new UserUnauthorizedException("Usuário não encontrado."));
+        } else {
+            throw new UserUnauthorizedException("Usuário não autenticado.");
+        }
     }
+
+
+
 }

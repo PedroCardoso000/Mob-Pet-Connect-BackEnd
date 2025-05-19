@@ -1,5 +1,6 @@
 package com.petconnect.petconnect.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.petconnect.petconnect.dtos.CreatePetRequest;
 import com.petconnect.petconnect.enums.PetGender;
 import jakarta.persistence.*;
@@ -42,6 +43,7 @@ public class Pet {
     private List<String> vaccines;
 
     @ManyToOne
+    @JsonBackReference
     private User user;
 
     public Pet (CreatePetRequest request, PetGender gender, User user) {

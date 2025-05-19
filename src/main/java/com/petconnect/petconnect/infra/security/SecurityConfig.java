@@ -31,19 +31,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/chat.html").permitAll() // Permitir acesso à página de chat
-                        .requestMatchers("/static/**", "/css/**", "/js/**").permitAll() // Permitir acesso a arquivos estáticos
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers("/user").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/reset").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll() // para garantir o acesso à documentação da API
-                        .requestMatchers(HttpMethod.GET, "/chat/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/topic/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/app/**").permitAll()
-                        .requestMatchers("/pet/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest()
+                        .permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

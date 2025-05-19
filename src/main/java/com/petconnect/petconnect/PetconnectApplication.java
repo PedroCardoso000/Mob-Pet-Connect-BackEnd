@@ -7,5 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PetconnectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PetconnectApplication.class, args);
+		System.out.println("------------------------------");
+		System.out.println("Pet Connect Application");
+		System.out.println("------------------------------");
 	}
 }

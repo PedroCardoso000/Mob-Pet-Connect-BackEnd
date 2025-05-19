@@ -1,9 +1,11 @@
 package com.petconnect.petconnect.controllers;
 
 import com.petconnect.petconnect.Entities.User;
+import com.petconnect.petconnect.dtos.CreateUserRequest;
 import com.petconnect.petconnect.dtos.LoginDTO;
 import com.petconnect.petconnect.dtos.LoginResDTO;
 import com.petconnect.petconnect.services.TokenService;
+import com.petconnect.petconnect.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,8 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResDTO> login(@RequestBody @Validated LoginDTO loginDTO) throws UsernameNotFoundException {
@@ -31,4 +35,5 @@ public class AuthenticationController {
         var token = tokenService.generateToken((User) authentication.getPrincipal());
         return ResponseEntity.ok(new LoginResDTO(token));
     }
+
 }

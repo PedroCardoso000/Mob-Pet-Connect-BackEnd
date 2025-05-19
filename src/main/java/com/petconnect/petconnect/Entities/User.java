@@ -1,5 +1,6 @@
 package com.petconnect.petconnect.Entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.petconnect.petconnect.dtos.CreateUserRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,9 +11,12 @@ import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
 
 @Entity
 @Table(name = "\"user\"")
@@ -31,6 +35,12 @@ public class User implements UserDetails {
     private String phone;
     private String cpf;
     private String password_hash;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Pet> pets = new ArrayList<>();
+
+
 
 
     public User(CreateUserRequest createUserRequest, String passwordHash) {

@@ -26,9 +26,10 @@ public class PetService {
 
     @Autowired
     PetRepository petRepository;
-
+    //Problema
     public Pet createPet(CreatePetRequest request) {
             PetGender gender = PetGender.fromString(request.gender());
+        System.out.println("Resultado " + SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             Pet pet = new Pet(request, gender, loggedUser);
