@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("chat-room")
+@RequestMapping("/chat-room")
 public class ChatRoomController {
 
     @Autowired
     ChatRoomService chatRoomService;
 
-    @PostMapping()
+    @PostMapping
     ResponseEntity<ChatRoom> createChatRoom(@Validated @RequestBody CreateChatRoomRequest request) {
         ChatRoom chatRoom = chatRoomService.createChatRoom(request);
         return  ResponseEntity.ok(chatRoom);

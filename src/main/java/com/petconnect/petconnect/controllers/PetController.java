@@ -1,7 +1,9 @@
 package com.petconnect.petconnect.controllers;
 
 import com.petconnect.petconnect.Entities.Pet;
+import com.petconnect.petconnect.adpter.PetAdapter;
 import com.petconnect.petconnect.dtos.CreatePetRequest;
+import com.petconnect.petconnect.dtos.PetDtoObejct;
 import com.petconnect.petconnect.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -27,6 +29,8 @@ public class PetController {
 
     @Autowired
     PetService petService;
+    @Autowired
+    PetAdapter petAdapter;
 
     @PostMapping
     public ResponseEntity<Pet> createPet(@Validated @RequestBody CreatePetRequest request) {
@@ -35,15 +39,17 @@ public class PetController {
     }
 
     @GetMapping
-    public  ResponseEntity<List<Pet>> listPets() {
+    public  ResponseEntity<List<PetDtoObejct>> listPets() {
         List<Pet> pets = petService.listPets();
-        return  ResponseEntity.ok(pets);
+        List<PetDtoObejct> petsObjects = petAdapter.convertPetOb(pets);
+        return  ResponseEntity.ok(petsObjects);
     }
 
     @GetMapping("/{id}")
-    public  ResponseEntity<Pet> getPetById(@PathVariable Long id) {
+    public  ResponseEntity<PetDtoObejct> getPetById(@PathVariable Long id) {
         Pet pet = petService.findPetById(id);
-        return  ResponseEntity.ok(pet);
+        PetDtoObejct  petDtoObejct =  petAdapter.convertPetOb(pet);
+        return  ResponseEntity.ok(petDtoObejct);
     }
 
     @GetMapping("/user/{id}")

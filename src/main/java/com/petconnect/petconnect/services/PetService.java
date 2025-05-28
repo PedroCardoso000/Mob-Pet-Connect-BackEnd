@@ -4,6 +4,7 @@ import com.petconnect.petconnect.Entities.Pet;
 import com.petconnect.petconnect.Entities.User;
 import com.petconnect.petconnect.Exceptions.PetNotFoundException;
 import com.petconnect.petconnect.Exceptions.UserUnauthorizedException;
+import com.petconnect.petconnect.adpter.PetAdapter;
 import com.petconnect.petconnect.dtos.CreatePetRequest;
 import com.petconnect.petconnect.enums.PetGender;
 import com.petconnect.petconnect.repositories.PetRepository;
@@ -26,6 +27,8 @@ public class PetService {
 
     @Autowired
     PetRepository petRepository;
+
+
     //Problema
     public Pet createPet(CreatePetRequest request) {
             PetGender gender = PetGender.fromString(request.gender());
@@ -38,6 +41,7 @@ public class PetService {
 
     public Pet findPetById(Long petId) {
         Optional<Pet> pet = petRepository.findById(petId);
+
         if(pet.isEmpty()) throw new PetNotFoundException();
         return pet.get();
     }
