@@ -6,6 +6,7 @@ public class ChatMessage {
     private String receiver;
     private String content;
     private String chatRoom;  // Novo campo para identificar o chatRoom
+    private String type;
 
     // Getters and Setters
 
@@ -39,6 +40,14 @@ public class ChatMessage {
 
     public void setChatRoom(String chatRoom) {
         this.chatRoom = chatRoom;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
 

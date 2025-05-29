@@ -20,10 +20,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
                 .addEndpoint("/chat")
-                .setAllowedOrigins("http://localhost:8080/*")
-                .setAllowedOriginPatterns("http://localhost:8080/*")
-                .setAllowedOrigins("http://localhost:5173/")
-                .setAllowedOriginPatterns("http://localhost:5173/")
+                .setAllowedOriginPatterns(
+                        "http://localhost:*",
+                        "http://127.0.0.1:*",
+                        "http://192.168.15.3:*" // IP da sua rede local
+                )
                 .withSockJS();
     }
 }

@@ -29,8 +29,12 @@ public class ChatController {
     // Envia a mensagem para um chat compartilhado entre os dois usuários
     @MessageMapping("/chat.send")
     public void sendMessage(@Payload ChatMessage chatMessage) {
-        String chatRoom = chatMessage.getSender() + "-" + chatMessage.getReceiver();
-        messagingTemplate.convertAndSend("/topic/chat/" + chatRoom, chatMessage);
+        String senderChannel = "/topic/chat/" + chatMessage.getSender();
+        String receiverChannel = "/topic/chat/" + chatMessage.getReceiver();
+
+        messagingTemplate.convertAndSend(senderChannel, chatMessage);
+        messagingTemplate.convertAndSend(receiverChannel, chatMessage);
     }
+
 
 }
